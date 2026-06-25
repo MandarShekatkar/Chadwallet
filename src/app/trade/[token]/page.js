@@ -1,27 +1,27 @@
 import Link from "next/link";
 import Image from "next/image";
-
-import { tokens } from "@/data/tokens";
-
+import Navbar from "@/components/Navbar";
 import buySellImg from "@/assets/flow/buy-sell-4.png";
+
+import {
+  fetchTokenOverview,
+  fetchTrendingTokens,
+} from "@/lib/birdeye";
 
 export default async function TradePage({ params }) {
   const { token } = await params;
 
-  const currentToken = tokens.find(
-    (item) => item.id === token
-  );
+  // Fetch trending tokens for sidebar
+  const trendingData = await fetchTrendingTokens();
+  const tokens = trendingData.data.tokens;
 
-  if (!currentToken) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-3xl font-bold">
-        Token Not Found
-      </div>
-    );
-  }
+  // Fetch selected token directly by its address
+  const tokenData = await fetchTokenOverview(token);
 
   return (
-    <main className="min-h-screen p-6">
+    <>
+     <Navbar />
+     <main className="min-h-screen p-6">
       <div className="grid lg:grid-cols-[250px_1fr_350px] gap-6">
 
         {/* LEFT SIDEBAR */}
@@ -31,13 +31,17 @@ export default async function TradePage({ params }) {
           </h2>
 
           <div className="flex flex-col gap-4">
-            {tokens.map((token) => (
+            {tokens.map((item) => (
               <Link
-                key={token.id}
-                href={`/trade/${token.id}`}
-                className="hover:text-green-500 transition"
+                key={item.address}
+                href={`/trade/${item.address}`}
+                className={`hover:text-green-500 transition ${
+                  item.address === token
+                    ? "text-green-500 font-bold"
+                    : ""
+                }`}
               >
-                {token.name}
+                {item.symbol}
               </Link>
             ))}
           </div>
@@ -48,15 +52,40 @@ export default async function TradePage({ params }) {
 
           <div className="mb-6">
             <h1 className="text-5xl font-bold">
-              {currentToken.name}
+              {tokenData.data.name}
             </h1>
 
             <p className="text-xl text-gray-500 mt-2">
-              Price: {currentToken.price}
+              Price: $
+              {tokenData.data.price
+                ? tokenData.data.price.toFixed(8)
+                : "N/A"}
             </p>
 
-            <p className="text-green-500 font-semibold mt-2">
-              {currentToken.change}
+            <p
+              className={`font-semibold mt-2 ${
+                (tokenData.data.priceChange24hPercent ?? 0) >= 0
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {tokenData.data.priceChange24hPercent != null
+                ? `${tokenData.data.priceChange24hPercent.toFixed(2)}%`
+                : "N/A"}
+            </p>
+
+            <p className="text-gray-500 mt-2">
+              Market Cap: $
+              {new Intl.NumberFormat("en-US").format(
+                Math.round(tokenData.data.marketCap ?? 0)
+              )}
+            </p>
+
+            <p className="text-gray-500">
+              Holders:{" "}
+              {new Intl.NumberFormat("en-US").format(
+                tokenData.data.holder ?? 0
+              )}
             </p>
           </div>
 
@@ -69,7 +98,7 @@ export default async function TradePage({ params }) {
             />
           </div>
 
-          {/* HOLDERS + TRADES */}
+          {/* HOLDERS + VOLUME */}
           <div className="grid md:grid-cols-2 gap-4 mt-4">
 
             <div className="border rounded-2xl p-4">
@@ -78,21 +107,40 @@ export default async function TradePage({ params }) {
               </h3>
 
               <div className="space-y-2">
-                <p>Wallet #1</p>
-                <p>Wallet #2</p>
-                <p>Wallet #3</p>
+                <p>Total Holders</p>
+
+                <p className="font-bold">
+                  {new Intl.NumberFormat("en-US").format(
+                    tokenData.data.holder ?? 0
+                  )}
+                </p>
               </div>
             </div>
 
             <div className="border rounded-2xl p-4">
               <h3 className="text-2xl font-bold mb-4">
-                Recent Trades
+                24H Volume
               </h3>
 
               <div className="space-y-2">
-                <p>BUY $120</p>
-                <p>SELL $80</p>
-                <p>BUY $450</p>
+                <p>
+                  $
+                  {new Intl.NumberFormat("en-US").format(
+                    Math.round(tokenData.data.v24hUSD ?? 0)
+                  )}
+                </p>
+
+                <p
+                  className={
+                    (tokenData.data.v24hChangePercent ?? 0) >= 0
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }
+                >
+                  {tokenData.data.v24hChangePercent != null
+                    ? `${tokenData.data.v24hChangePercent.toFixed(2)}%`
+                    : "N/A"}
+                </p>
               </div>
             </div>
 
@@ -124,5 +172,7 @@ export default async function TradePage({ params }) {
 
       </div>
     </main>
+    </>
+    
   );
 }
