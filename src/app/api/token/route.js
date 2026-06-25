@@ -16,7 +16,7 @@ export async function GET(request) {
 
     const response = await fetch(
       `https://public-api.birdeye.so/defi/token_overview?address=${address}`,
-      {
+      { 
         headers: {
           "x-api-key": process.env.BIRDEYE_API_KEY,
           "x-chain": "solana",
