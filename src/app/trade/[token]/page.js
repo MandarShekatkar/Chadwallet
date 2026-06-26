@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import buySellImg from "@/assets/flow/buy-sell-4.png";
-
+import BuySellPanel from "@/components/BuySellPanel";
 import {
   fetchTokenOverview,
   fetchTrendingTokens,
@@ -148,27 +148,7 @@ export default async function TradePage({ params }) {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="border rounded-2xl p-5">
-          <h2 className="text-2xl font-bold mb-6">
-            Buy / Sell
-          </h2>
-
-          <div className="flex flex-col gap-4">
-            <button className="bg-green-500 text-white py-3 rounded-xl font-semibold">
-              Buy
-            </button>
-
-            <button className="bg-red-500 text-white py-3 rounded-xl font-semibold">
-              Sell
-            </button>
-          </div>
-
-          <div className="mt-8">
-            <p className="text-lg">
-              Position Coming Soon
-            </p>
-          </div>
-        </div>
+        <BuySellPanel token={tokenData.data} />
 
       </div>
     </main>
