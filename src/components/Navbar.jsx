@@ -10,12 +10,12 @@ export default function Navbar() {
     login,
     logout,
     authenticated,
-    user,
   } = usePrivy();
 
   return (
     <nav className="flex items-center justify-between px-4 py-4 border-b">
 
+      {/* Logo */}
       <Link
         href="/"
         className="hover:opacity-80 transition"
@@ -29,32 +29,45 @@ export default function Navbar() {
         />
       </Link>
 
+      {/* Right Side */}
       <div className="flex items-center gap-3">
 
-        <button className="border px-3 py-2 rounded-lg">
+        {/* App Store */}
+        <Link
+          href="https://apps.apple.com/us/app/chadwallet/id6757367474"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border px-4 py-2 rounded-lg hover:bg-black hover:text-white transition"
+        >
           App Store
-        </button>
+        </Link>
 
-        <button className="border px-3 py-2 rounded-lg">
+        {/* Play Store */}
+        <Link
+          href="https://play.google.com/store/apps/details?id=xyz.chadwallet.www"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border px-4 py-2 rounded-lg hover:bg-black hover:text-white transition"
+        >
           Play Store
-        </button>
+        </Link>
 
         {!authenticated ? (
           <button
             onClick={login}
-            className="bg-black text-white px-4 py-2 rounded-lg"
+            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
           >
             Login
           </button>
         ) : (
           <>
-            <span className="font-medium text-green-600">
+            <span className="font-semibold text-green-600">
               Connected
             </span>
 
             <button
               onClick={logout}
-              className="border px-4 py-2 rounded-lg"
+              className="border px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition"
             >
               Logout
             </button>

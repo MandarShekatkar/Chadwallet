@@ -7,9 +7,9 @@ export default async function TrendingTokens() {
 
   const tokens = data.data.tokens;
 
-  return (
+ return (
+  <section id="trending">
     <div className="py-3 border-y bg-black text-white">
-
       <Marquee
         speed={45}
         gradient={false}
@@ -46,7 +46,7 @@ export default async function TrendingTokens() {
           </Link>
         ))}
       </Marquee>
-
     </div>
-  );
+  </section>
+);
 }

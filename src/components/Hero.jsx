@@ -1,4 +1,30 @@
+"use client";
+
+import { usePrivy } from "@privy-io/react-auth";
+
 export default function Hero() {
+  const { authenticated, login } = usePrivy();
+
+  const handleStartTrading = () => {
+    if (!authenticated) {
+      login();
+      return;
+    }
+
+    document
+      .getElementById("trending")
+      ?.scrollIntoView({
+        behavior: "smooth",
+      });
+  };
+
+  const handleDownload = () => {
+    window.open(
+      "https://play.google.com/store/apps/details?id=xyz.chadwallet.www",
+      "_blank"
+    );
+  };
+
   return (
     <section className="px-6 py-16 text-center">
       <h1 className="text-5xl font-bold mb-6">
@@ -13,11 +39,17 @@ export default function Hero() {
       </p>
 
       <div className="flex justify-center gap-4">
-        <button className="bg-black text-white px-6 py-3 rounded-lg">
+        <button
+          onClick={handleStartTrading}
+          className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition"
+        >
           Start Trading
         </button>
 
-        <button className="border px-6 py-3 rounded-lg">
+        <button
+          onClick={handleDownload}
+          className="border px-6 py-3 rounded-lg hover:bg-black hover:text-white transition"
+        >
           Download App
         </button>
       </div>
@@ -31,7 +63,10 @@ export default function Hero() {
           playsInline
           className="w-full max-w-md rounded-2xl shadow-xl"
         >
-          <source src="/chadwallet.mp4" type="video/mp4" />
+          <source
+            src="/chadwallet.mp4"
+            type="video/mp4"
+          />
           Your browser does not support the video tag.
         </video>
       </div>
