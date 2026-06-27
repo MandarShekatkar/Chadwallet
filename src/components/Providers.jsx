@@ -1,6 +1,7 @@
 "use client";
 
 import { PrivyProvider } from "@privy-io/react-auth";
+import CleanOAuthUrl from "@/components/CleanOAuthUrl";
 
 export default function Providers({ children }) {
   return (
@@ -19,6 +20,7 @@ export default function Providers({ children }) {
         },
       }}
     >
+      <CleanOAuthUrl />
       {children}
     </PrivyProvider>
   );
