@@ -15,24 +15,24 @@ export default async function TradePage({ params }) {
   const { token } = await params;
 
 
-console.time("Trending API");
+
   
   // Fetch trending tokens for sidebar
   const trendingData = await fetchTrendingTokens();
 
-console.timeEnd("Trending API");
+
   const tokens = trendingData.data.tokens;
 
-  console.time("Overview API");
+ 
 
   // Fetch selected token directly by its address
   const tokenData = await fetchTokenOverview(token);
-console.timeEnd("Overview API");
+
   return (
     <>
       <Navbar />
-      <main className="min-h-screen p-6">
-        <div className="grid lg:grid-cols-[250px_1fr_350px] gap-6">
+      <main className="min-h-screen p-4 md:p-6 overflow-x-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-[250px_minmax(0,1fr)_350px] gap-6">
 
           {/* LEFT SIDEBAR */}
           <div className="border rounded-2xl p-5">
@@ -61,11 +61,11 @@ console.timeEnd("Overview API");
 
            <div className="mb-8">
 
-  <h1 className="text-5xl font-bold mb-6">
+  <h1 className="text-3xl md:text-5xl font-bold mb-6">
     {tokenData.data.name}
   </h1>
 
-  <div className="grid grid-cols-2 gap-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
     <div>
       <p className="text-gray-500 text-sm">
@@ -123,7 +123,7 @@ console.timeEnd("Overview API");
 </div>
 
             {/* CHART IMAGE */}
-            <div className="h-[500px] border rounded-2xl overflow-hidden">
+            <div className="h-[350px] md:h-[500px] border rounded-2xl overflow-hidden">
               <TradingChart
                 symbol={tokenData.data.symbol}
               />

@@ -13,9 +13,9 @@ export default function BuySellPanel({ token }) {
   }, [amount, token.price]);
 
   return (
-    <div className="border rounded-2xl p-6">
+    <div className="border rounded-2xl p-4 md:p-6 h-fit">
 
-      <h2 className="text-3xl font-bold mb-6">
+      <h2 className="text-2xl md:text-3xl font-bold mb-6">
         {mode === "buy" ? "Buy Token" : "Sell Token"}
       </h2>
 
@@ -47,7 +47,6 @@ export default function BuySellPanel({ token }) {
       </div>
 
       {/* Amount */}
-
       <label className="block text-sm mb-2">
         Amount (SOL)
       </label>
@@ -61,28 +60,26 @@ export default function BuySellPanel({ token }) {
       />
 
       {/* Price */}
+      <div className="flex justify-between items-center gap-3 mb-4">
 
-      <div className="flex justify-between mb-4">
-
-        <span className="text-gray-500">
+        <span className="text-gray-500 text-sm">
           Current Price
         </span>
 
-        <span className="font-semibold">
+        <span className="font-semibold text-sm break-all text-right">
           ${token.price.toFixed(8)}
         </span>
 
       </div>
 
       {/* Receive */}
+      <div className="flex justify-between items-center gap-3 mb-8">
 
-      <div className="flex justify-between mb-8">
-
-        <span className="text-gray-500">
+        <span className="text-gray-500 text-sm">
           You'll Receive
         </span>
 
-        <span className="font-semibold">
+        <span className="font-semibold text-sm break-all text-right">
           {estimatedTokens.toLocaleString(undefined, {
             maximumFractionDigits: 2,
           })}{" "}
@@ -92,7 +89,7 @@ export default function BuySellPanel({ token }) {
       </div>
 
       <button
-        className={`w-full py-4 rounded-xl text-white font-bold transition ${
+        className={`w-full py-4 rounded-xl text-white font-bold transition text-sm md:text-base ${
           mode === "buy"
             ? "bg-green-500 hover:bg-green-600"
             : "bg-red-500 hover:bg-red-600"

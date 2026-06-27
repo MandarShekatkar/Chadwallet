@@ -4,22 +4,28 @@ import Features from "@/components/Features";
 import TrendingTokens from "@/components/TrendingTokens";
 import Footer from "@/components/Footer";
 
-export default function Home() {
+import { fetchTrendingTokens } from "@/lib/birdeye";
+
+export default async function Home() {
+  const data = await fetchTrendingTokens();
+
+  const tokens = data.data.tokens;
+
   return (
     <main>
       <Navbar />
 
-      {/* Top ticker */}
-      <TrendingTokens />
+      {/* Top Ticker */}
+      <TrendingTokens tokens={tokens} />
 
       <Hero />
 
       <Features />
 
-      {/* Bottom ticker */}
-      <TrendingTokens />
+      {/* Bottom Ticker */}
+      <TrendingTokens tokens={tokens} />
 
-<Footer />
+      <Footer />
     </main>
   );
 }

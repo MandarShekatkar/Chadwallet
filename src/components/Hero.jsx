@@ -26,18 +26,18 @@ export default function Hero() {
 
   return (
     <section className="px-6 py-16 text-center">
-      <h1 className="text-5xl font-bold mb-6">
+      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
         Trade Solana Tokens
         <br />
         Before Everyone Else
       </h1>
 
-      <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+      <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-8">
         Discover trending memecoins, track market movers,
         and manage your portfolio with ChadWallet.
       </p>
 
-      <div className="flex justify-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-center gap-4">
         <button
           onClick={handleStartTrading}
           className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition"
@@ -60,7 +60,7 @@ export default function Hero() {
           muted
           loop
           playsInline
-          className="w-full max-w-md rounded-2xl shadow-xl"
+          className="w-full max-w-sm md:max-w-md rounded-2xl shadow-xl"
         >
           <source src="/chadwallet.mp4" type="video/mp4" />
           Your browser does not support the video tag.

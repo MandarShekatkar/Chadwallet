@@ -3,9 +3,11 @@
 import { useEffect, useRef } from "react";
 
 export default function TradingChart({ symbol }) {
-  const container = useRef();
+  const container = useRef(null);
 
   useEffect(() => {
+    if (!container.current) return;
+
     container.current.innerHTML = "";
 
     const script = document.createElement("script");
@@ -31,12 +33,18 @@ export default function TradingChart({ symbol }) {
     });
 
     container.current.appendChild(script);
+
+    return () => {
+      if (container.current) {
+        container.current.innerHTML = "";
+      }
+    };
   }, [symbol]);
 
   return (
     <div
-      className="tradingview-widget-container h-[450px]"
       ref={container}
+      className="tradingview-widget-container h-full w-full"
     />
   );
 }
