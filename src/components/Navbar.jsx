@@ -1,5 +1,6 @@
 "use client";
-
+import { useEffect } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../assets/logo/light.png";
@@ -7,6 +8,21 @@ import { usePrivy } from "@privy-io/react-auth";
 
 export default function Navbar() {
   const { login, logout, authenticated } = usePrivy();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+  const params = new URLSearchParams(searchParams.toString());
+
+  if (
+    params.has("privy_oauth_state") ||
+    params.has("privy_oauth_provider") ||
+    params.has("privy_oauth_code")
+  ) {
+    router.replace(pathname);
+  }
+}, [pathname, router, searchParams]);
 
   return (
     <nav className="border-b">
@@ -58,7 +74,10 @@ export default function Navbar() {
               </span>
 
               <button
-                onClick={logout}
+                onClick={async () => {
+                    await logout();
+                    router.replace("/");
+                  }}
                 className="border px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition"
               >
                 Logout
