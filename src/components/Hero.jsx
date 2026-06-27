@@ -1,9 +1,11 @@
 "use client";
 
 import { usePrivy } from "@privy-io/react-auth";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
   const { authenticated, login } = usePrivy();
+  const router = useRouter();
 
   const handleStartTrading = () => {
     if (!authenticated) {
@@ -11,17 +13,14 @@ export default function Hero() {
       return;
     }
 
-    document
-      .getElementById("trending")
-      ?.scrollIntoView({
-        behavior: "smooth",
-      });
+    router.push("/trade");
   };
 
   const handleDownload = () => {
     window.open(
       "https://play.google.com/store/apps/details?id=xyz.chadwallet.www",
-      "_blank"
+      "_blank",
+      "noopener,noreferrer"
     );
   };
 
@@ -63,10 +62,7 @@ export default function Hero() {
           playsInline
           className="w-full max-w-md rounded-2xl shadow-xl"
         >
-          <source
-            src="/chadwallet.mp4"
-            type="video/mp4"
-          />
+          <source src="/chadwallet.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
