@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Marquee from "react-fast-marquee";
 import { fetchTrendingTokens } from "@/lib/birdeye";
 
 export default async function TrendingTokens() {
@@ -7,47 +8,45 @@ export default async function TrendingTokens() {
   const tokens = data.data.tokens;
 
   return (
-    <section className="py-20 px-6">
-      <h2 className="text-4xl font-bold text-center mb-4">
-        Trending Tokens
-      </h2>
+    <div className="py-3 border-y bg-black text-white">
 
-      <p className="text-center text-gray-600 mb-12">
-        Click any token to view its trading page.
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <Marquee
+        speed={45}
+        gradient={false}
+      >
         {tokens.map((token) => (
           <Link
             key={token.address}
             href={`/trade/${token.address}`}
-            className="border rounded-2xl p-6 hover:shadow-lg transition"
+            className="mx-8 flex items-center gap-2 hover:text-green-400 transition"
           >
-            <h3 className="text-2xl font-bold">
-              {token.name}
-            </h3>
+            <span className="font-bold">
+              {token.symbol}
+            </span>
 
-            <p className="text-gray-500 mt-2">
-  $
-  {token.price
-    ? token.price.toFixed(8)
-    : "N/A"}
-</p>
+            <span>
+              $
+              {token.price
+                ? token.price.toFixed(6)
+                : "0"}
+            </span>
 
-<p
-  className={`font-semibold mt-2 ${
-    (token.price24hChangePercent ?? 0) >= 0
-      ? "text-green-500"
-      : "text-red-500"
-  }`}
->
-  {token.price24hChangePercent != null
-    ? `${token.price24hChangePercent.toFixed(2)}%`
-    : "N/A"}
-</p>
+            <span
+              className={
+                (token.price24hChangePercent ?? 0) >= 0
+                  ? "text-green-400"
+                  : "text-red-400"
+              }
+            >
+              {token.price24hChangePercent
+                ? token.price24hChangePercent.toFixed(2)
+                : "0"}
+              %
+            </span>
           </Link>
         ))}
-      </div>
-    </section>
+      </Marquee>
+
+    </div>
   );
 }

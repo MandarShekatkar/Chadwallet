@@ -8,7 +8,9 @@ export async function fetchTokenOverview(address) {
         "x-api-key": process.env.BIRDEYE_API_KEY,
         "x-chain": "solana",
       },
-      cache: "no-store",
+      next: {
+        revalidate: 30,
+      },
     }
   );
 
@@ -31,7 +33,9 @@ export async function fetchTrendingTokens() {
         "x-api-key": process.env.BIRDEYE_API_KEY,
         "x-chain": "solana",
       },
-      cache: "no-store",
+      next: {
+        revalidate: 30,
+      },
     }
   );
 
@@ -41,6 +45,32 @@ export async function fetchTrendingTokens() {
     console.error("BirdEye Trending Error:", res.status, errorText);
 
     throw new Error(`BirdEye Trending Error ${res.status}`);
+  }
+
+  return res.json();
+}
+
+// 👇 NEW FUNCTION
+export async function fetchTokenTrades(address) {
+  const res = await fetch(
+    `${BASE_URL}/defi/txs/token?address=${address}&offset=0&limit=10`,
+    {
+      headers: {
+        "x-api-key": process.env.BIRDEYE_API_KEY,
+        "x-chain": "solana",
+      },
+      next: {
+        revalidate: 10,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errorText = await res.text();
+
+    console.error("BirdEye Trades Error:", res.status, errorText);
+
+    throw new Error(`BirdEye Trades Error ${res.status}`);
   }
 
   return res.json();
