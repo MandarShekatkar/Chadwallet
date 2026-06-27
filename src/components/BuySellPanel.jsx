@@ -1,10 +1,19 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function BuySellPanel({ token }) {
   const [mode, setMode] = useState("buy");
   const [amount, setAmount] = useState("");
+
+  const { user, authenticated } = usePrivy();
+
+  const userName =
+    user?.google?.name ||
+    user?.email?.address ||
+    user?.apple?.email ||
+    "Guest";
 
   const estimatedTokens = useMemo(() => {
     if (!amount || Number(amount) <= 0) return 0;
@@ -99,6 +108,63 @@ export default function BuySellPanel({ token }) {
           ? `Buy ${token.symbol}`
           : `Sell ${token.symbol}`}
       </button>
+
+      {/* USER POSITION */}
+      {authenticated && (
+        <div className="mt-8 border-t pt-6">
+
+          <h3 className="text-xl font-bold mb-4">
+            Your Position
+          </h3>
+
+          <div className="space-y-3">
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                User
+              </span>
+
+              <span className="font-semibold">
+                {userName}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Token
+              </span>
+
+              <span className="font-semibold">
+                {token.symbol}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Current Price
+              </span>
+
+              <span className="font-semibold break-all text-right">
+                ${token.price.toFixed(8)}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Estimated Tokens
+              </span>
+
+              <span className="font-semibold">
+                {estimatedTokens.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+      )}
 
     </div>
   );

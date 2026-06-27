@@ -60,7 +60,7 @@ export async function fetchTokenTrades(address) {
         "x-chain": "solana",
       },
       next: {
-        revalidate: 10,
+        revalidate: 120,
       },
     }
   );
