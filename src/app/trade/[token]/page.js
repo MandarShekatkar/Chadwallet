@@ -15,10 +15,16 @@ export default async function TradePage({ params }) {
   const trendingData = await fetchTrendingTokens();
   const tokens = trendingData.data.tokens;
 
-  const tokenData = await fetchTokenOverview(token);
+ const tokenData = await fetchTokenOverview(token);
 
+let trades = [];
+
+try {
   const tradesData = await fetchTokenTrades(token);
-  const trades = tradesData?.data?.items || [];
+  trades = tradesData?.data?.items ?? [];
+} catch (error) {
+  console.error("Trades unavailable:", error.message);
+}
 
   return (
     <>
